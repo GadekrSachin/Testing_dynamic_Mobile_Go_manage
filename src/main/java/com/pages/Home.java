@@ -58,42 +58,62 @@ public class Home {
 		Base_driver.driver.findElement(Select_Service).click();
 
 		// multiple catagory 
-		String categoryName = props.getProperty("category").trim();
-		String serviceName = props.getProperty("service").trim();
- 
-		List<WebElement> categories = Base_driver.driver.findElements(All_catagory);
+		 
+		String[] categories = props.getProperty("category").split("\\s*,\\s*");
+		String[] services = props.getProperty("service").split("\\s*,\\s*");
 
-		boolean categoryFound = false;
-		for (WebElement category : categories) {
-		    String categoryText = category.getText().trim();
-		    if (categoryText.equalsIgnoreCase(categoryName)) {
-		        category.click();
-		        categoryFound = true;
-		        break;
+		for (String categoryName : categories) {
+		    categoryName = categoryName.trim();
+		    boolean categoryFound = false;
+ 
+		    List<WebElement> categoryElements = Base_driver.driver.findElements(All_catagory);
+
+		    for (WebElement category : categoryElements) {
+		        if (category.getText().trim().equalsIgnoreCase(categoryName)) {
+		            category.click();  
+		            categoryFound = true;
+		            Thread.sleep(1000);  
+		            List<WebElement> serviceElements = Base_driver.driver.findElements(All_service);
+		            boolean anyServiceSelected = false; 
+		            for (String serviceName : services) {
+		                serviceName = serviceName.trim();
+		                boolean serviceFound = false;
+
+		                for (WebElement service : serviceElements) {
+		                    if (service.getText().trim().equalsIgnoreCase(serviceName)) {
+		                        String ariaPressed = service.getAttribute("aria-pressed");
+		                        if (ariaPressed == null || ariaPressed.equals("false")) {
+		                            service.click();
+		                            System.out.println("Service selected: " + serviceName);
+		                            anyServiceSelected = true;
+		                            Thread.sleep(1000);
+		                        } else {
+		                            System.out.println("Service already selected: " + serviceName);
+		                        }
+		                        serviceFound = true;
+		                        break;
+		                    }
+		                }
+
+		                if (!serviceFound) {
+		                    System.out.println("Service not found in " + categoryName + ": " + serviceName);
+		                }
+		            }
+		            if (anyServiceSelected) {
+		                category.click(); 
+		                Thread.sleep(1000);
+		            }
+		            break; 
+		        }
+		    }
+		    if (!categoryFound) {
+		        System.out.println("Category not found: " + categoryName);
 		    }
 		}
 
-		if (!categoryFound) {
-		    System.out.println("Category not found: " + categoryName);
-		}
- 
-		Thread.sleep(2000); 
- 		List<WebElement> services = Base_driver.driver.findElements(All_service);
-
-		boolean serviceFound = false;
-		for (WebElement service : services) {
-		    String serviceText = service.getText().trim();
-		    if (serviceText.equalsIgnoreCase(serviceName)) {
-		        service.click();
-		        serviceFound = true;
-		        break;
-		    }
-		}
-
-		if (!serviceFound) {
-		    System.out.println("Service not found: " + serviceName);
-		}
-	 		//
+		
+		
+		//
 		Base_driver.driver.findElement(backc).click();
 		Base_driver.driver.findElement(frequency).click();
 		Base_driver.driver.findElement(month).click();
