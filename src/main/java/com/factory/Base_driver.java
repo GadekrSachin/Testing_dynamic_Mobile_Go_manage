@@ -1,11 +1,10 @@
 package com.factory;
 
-import java.io.File;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver; 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Base_driver {
@@ -31,6 +30,12 @@ public class Base_driver {
 			WebDriverManager.firefoxdriver().setup();
 			driver = new FirefoxDriver();	 
 		}
+		else if(browser.equalsIgnoreCase("edge")) {
+			  driver = new EdgeDriver();
+		}
+		
+		
+		
 		
 		else {
 			System.out.println(browser+"unsupported browser");

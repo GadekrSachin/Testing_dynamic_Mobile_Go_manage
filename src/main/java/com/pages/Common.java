@@ -5,6 +5,8 @@ import java.util.Properties;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.factory.Base_driver;
 
@@ -14,6 +16,8 @@ public class Common {
 	private WebDriver driver;
 	Properties props = ConfigManager.getProperties();
 
+	
+	 
 	// Moduleelement
 	private By Sale_Module = By.xpath("//i[@class=\"ri-price-tag-3-fill\"]");
 	private By Appointment_Module = By.xpath("//i[@class=\"ri-calendar-fill\"]");
@@ -35,8 +39,10 @@ public class Common {
 	private By Gift_Menu = By.xpath("//button[@id=\"simple-tab-3\"]");
 	
 	
-	public void Upto_AllModule(String moduleName) throws InterruptedException {
-		Thread.sleep(4000);
+	public void Upto_AllModule(String moduleName) throws InterruptedException  {
+		 
+		Base_driver.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(8000));
+		
 		if (moduleName.equalsIgnoreCase("appointment")) {
 			Base_driver.driver.findElement(Appointment_Module).click();
 		} else if (moduleName.equalsIgnoreCase("sales")) {
@@ -47,7 +53,8 @@ public class Common {
 		
 			if(props.getProperty("Base_Resolution").equals(props.getProperty("Mobile_resolution")  )  ) {
 				Base_driver.driver.findElement(Catalog_Module_mobile).click();
-			}else {				
+			}else {		 
+				Thread.sleep(3000);
 				Base_driver.driver.findElement(Catalog_Module).click();
 			}
 			
@@ -69,9 +76,12 @@ public class Common {
 			System.out.println("Invalid module name: " + moduleName);
 		}
 	}
+	
+ 
+		public void Catalog_submodule(String Submodule)  {
 
-		public void Catalog_submodule(String Submodule) throws InterruptedException {
-			 Thread.sleep(2000);
+			Base_driver.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
+			
 			if (Submodule.equalsIgnoreCase("service menu")) {
 				Base_driver.driver.findElement(Service_Menu).click();
 			} else if (Submodule.equalsIgnoreCase("product")) {
