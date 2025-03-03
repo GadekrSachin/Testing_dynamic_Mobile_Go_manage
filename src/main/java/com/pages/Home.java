@@ -1,11 +1,13 @@
 package com.pages;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Properties;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement; 
+import org.openqa.selenium.WebElement;
 
 import com.factory.Base_driver;
 
@@ -16,28 +18,20 @@ public class Home {
  
 
 	private By Add_Form = By.xpath("(//i[@class=\"ri-add-fill\"])[2]");
-	private By Add_Form_mobile = By.xpath("(//i[@class=\"ri-add-fill\"])[1]");
-	
+	private By Add_Form_mobile = By.xpath("(//i[@class=\"ri-add-fill\"])[1]");	
 	private By First_name = By.xpath("//input[@placeholder=\"Name this form\"]");
 	private By Last_name = By.xpath("//input[@placeholder=\"Describe this form\"]");
 	private By Select_Service = By
 			.xpath("//div[contains(@class, 'MuiSelect-select') and contains(@class, 'MuiSelect-multiple')]");
-	private By catagory = By.xpath("//h3[@class=\"MuiAccordion-heading css-wnfue5\"]");
-	private By piece_service = By.xpath("//div[@class=\"MuiListItemText-root css-14f972m\"]");
-
+	private By All_catagory = By.xpath("//span[@class='MuiAccordionSummary-content MuiAccordionSummary-contentGutters css-1b8uc0m']");
+	private By All_service = By.xpath("//span[@class='MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-1w22uhs']");
 	private By backc = By.xpath("//div[@class=\"MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-1lbe2ow\"]");
- 
-	
-	
-	private By frequency = By.xpath("(//div[@aria-haspopup=\"listbox\"])[2]");
-	 
+ 	private By frequency = By.xpath("(//div[@aria-haspopup=\"listbox\"])[2]");
 	private By month = By.xpath("(//li[@role=\"option\"])[2]");
 	private By save = By.xpath("//button[contains(text(), 'Save')]");
-
 	private By add_question = By.xpath("(//span[@class='svc-add-new-item-button__text'])[1]");
-	 
-	
 	private By save_Q = By.xpath("//button[contains(text(),\"Save\")]");
+
 	
 	private By questionTitle(int index) {
 	    return By.xpath("(//h5[@class='sd-title sd-element__title sd-question__title']//span[@class='sv-string-editor'])[" + index + "]");
@@ -62,8 +56,44 @@ public class Home {
 		Base_driver.driver.findElement(First_name).sendKeys(props.getProperty("Form_FirstName"));
 		Base_driver.driver.findElement(Last_name).sendKeys(props.getProperty("Form_Desc"));
 		Base_driver.driver.findElement(Select_Service).click();
-		Base_driver.driver.findElement(catagory).click();
-		Base_driver.driver.findElement(piece_service).click(); 
+
+		// multiple catagory 
+		String categoryName = props.getProperty("category").trim();
+		String serviceName = props.getProperty("service").trim();
+ 
+		List<WebElement> categories = Base_driver.driver.findElements(All_catagory);
+
+		boolean categoryFound = false;
+		for (WebElement category : categories) {
+		    String categoryText = category.getText().trim();
+		    if (categoryText.equalsIgnoreCase(categoryName)) {
+		        category.click();
+		        categoryFound = true;
+		        break;
+		    }
+		}
+
+		if (!categoryFound) {
+		    System.out.println("Category not found: " + categoryName);
+		}
+ 
+		Thread.sleep(2000); 
+ 		List<WebElement> services = Base_driver.driver.findElements(All_service);
+
+		boolean serviceFound = false;
+		for (WebElement service : services) {
+		    String serviceText = service.getText().trim();
+		    if (serviceText.equalsIgnoreCase(serviceName)) {
+		        service.click();
+		        serviceFound = true;
+		        break;
+		    }
+		}
+
+		if (!serviceFound) {
+		    System.out.println("Service not found: " + serviceName);
+		}
+	 		//
 		Base_driver.driver.findElement(backc).click();
 		Base_driver.driver.findElement(frequency).click();
 		Base_driver.driver.findElement(month).click();
