@@ -12,7 +12,7 @@ import io.cucumber.testng.CucumberOptions;
 		glue={"Step_def" ,"Hooks"},
 		monochrome = true,
 		dryRun = false, 
-		tags = "@Form",   
+		tags = "@appointment",   
 		plugin = {
 						"pretty",
 						"html: test-report"

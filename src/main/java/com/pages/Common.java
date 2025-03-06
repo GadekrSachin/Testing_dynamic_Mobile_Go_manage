@@ -1,12 +1,15 @@
 package com.pages;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.factory.Base_driver;
 
@@ -98,7 +101,83 @@ public class Common {
 			}
 			}
 
+		public static void dragAndDrop(WebElement source, WebElement target) {
+	        Actions actions = new Actions(Base_driver.driver);
+	        actions.clickAndHold(source).moveToElement(target).release().perform();
+	        System.out.println("Dragged element to target.");
+	    }	
+		
+		public static void scrollToBottom() throws InterruptedException {
+	        JavascriptExecutor js = (JavascriptExecutor) Base_driver.driver;
+	        long lastHeight = (long) js.executeScript("return document.body.scrollHeight");
 
+	        while (true) {
+	            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+	            Thread.sleep(2000);  
+
+	            long newHeight = (long) js.executeScript("return document.body.scrollHeight");
+	            if (newHeight == lastHeight) {
+	                break;
+	            }
+	            lastHeight = newHeight;
+	        }
+	    }	
+		
+		public void scrollToElement(WebDriver driver, WebElement element) {
+	        try {
+	            JavascriptExecutor js = (JavascriptExecutor) driver;
+	            js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element);
+	            System.out.println("Scrolled to the element successfully.");
+	        } catch (Exception e) {
+	            System.out.println("Unable to scroll to the element: " + e.getMessage());
+	        }
+	    }
+		public void dropAppointmentInAvailableSlot(WebDriver driver, WebElement appointmentCard) {
+		    try {
+		    	
+		    	String time= props.getProperty("timeSlots");
+ 		        String[] timeSlots =time.split(",");  
+		        
+		        Actions actions = new Actions(Base_driver. driver);
+		        boolean isDropped = false;
+ 
+		        for (String timeSlot : timeSlots) {
+		            List<WebElement> dropAreas =Base_driver. driver.findElements(By.xpath("//td[@data-time-slot='" + timeSlot + "']"));
+		            
+		            for (WebElement dropArea : dropAreas) {
+		                if (isDropAreaEmpty(dropArea)) {  
+		                    System.out.println("Dropping appointment at: " + timeSlot);
+ 
+		                    actions.clickAndHold(appointmentCard)
+		                           .moveToElement(dropArea)
+		                           .release()
+		                           .build()
+		                           .perform();
+
+		                    System.out.println("Appointment dropped successfully at " + timeSlot);
+		                    isDropped = true;
+		                    break; 
+		                }
+		            }
+		            if (isDropped) break;  
+		        }
+
+		        if (!isDropped) {
+		            System.out.println("No available drop slot found.");
+		        }
+
+		    } catch (NoSuchElementException e) {
+		        System.out.println("Appointment or drop areas not found.");
+		    }
+		}
+ 
+		public boolean isDropAreaEmpty(WebElement dropArea) {
+		    String classAttribute = dropArea.getAttribute("class");
+		    return !classAttribute.contains("occupied"); 
+		}
+
+	
+		 
 }
 
 

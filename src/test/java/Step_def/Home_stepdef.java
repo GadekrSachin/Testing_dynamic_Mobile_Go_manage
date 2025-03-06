@@ -31,6 +31,16 @@ public class Home_stepdef {
 		log.user_provide_and(props.getProperty("username"), props.getProperty("password"));
 
 	}
+	 
+	
+	@When("redline on current time")
+	public void redline_on_current_time() {
+		Homepage. redline();
+	}
+	@When("user drag and drop")
+	public void user_drag_and_drop() throws InterruptedException { 
+		Homepage.user_drag();
+	}
 
 	@When("user on form list page")
 	public void user_on_form_list_page() throws InterruptedException {
