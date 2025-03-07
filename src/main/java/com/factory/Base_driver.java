@@ -18,11 +18,14 @@ public class Base_driver {
 		
 		if(browser.equalsIgnoreCase("chrome")){		
 //			WebDriverManager.chromedriver();
+//			WebDriverManager.chromedriver().setup();
+ 			System.setProperty("webdriver.chrome.driver", "C:\\Users\\SHUBH\\Driver\\Testing browser\\chromedriver-122.exe");
 			ChromeOptions options = new ChromeOptions();
+			options.setBinary("C:\\Users\\SHUBH\\Driver\\Testing browser\\chrome-win64\\chrome.exe");
 //			options.addArguments("--remote-allow-origins=*" );
-// 			System.setProperty("webdriver.chrome.driver", "C:\\Selenium WebDriver\\ChromeDriver\\chromedriver.exe");
-			driver = new ChromeDriver(options);
-//			driver = new ChromeDriver( );
+			  driver = new ChromeDriver(options);
+
+//	    	 	driver = new ChromeDriver( );
 			
 		}else if(browser.equalsIgnoreCase("firefox")) {
  

@@ -156,6 +156,8 @@ public class Common {
 
 		                    System.out.println("Appointment dropped successfully at " + timeSlot);
 		                    isDropped = true;
+		                    
+		                    
 		                    break; 
 		                }
 		            }

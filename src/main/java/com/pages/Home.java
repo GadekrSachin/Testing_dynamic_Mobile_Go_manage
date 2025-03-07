@@ -44,7 +44,7 @@ public class Home {
 	private By save_Q = By.xpath("//button[contains(text(),\"Save\")]");
 	private By red_Line = By.xpath("//span[@class=\"MuiTypography-root MuiTypography-body1 css-1w22uhs\"]");
 
-	private By appointmentcard = By.xpath("(//i[@class='ri-newspaper-line'])[3]");
+	private By appointmentcard = By.xpath("(//i[@class='ri-newspaper-line'])[2]");
 
 	private By questionTitle(int index) {
 		return By.xpath(
@@ -183,29 +183,7 @@ public class Home {
 			Base_driver.driver.findElement(questionLocator).sendKeys(questions[i]);
 		}
 		
-		
-//		DevTools devTools = Base_driver. driver.getDevTools();
-//        devTools.createSession();
-//
-//        // Enable Network Monitoring
-//        devTools.send(Network.enable(Optional.of(1000000), Optional.of(1000000), Optional.of(1000000)));
-//
-//        // Listen to network responses
-//        devTools.addListener(Network.responseReceived(), response -> {
-//            String url = response.getResponse().getUrl();
-//            if (url.contains("/your-api-endpoint")) { // Adjust the API endpoint
-//                System.out.println("API Response Captured from: " + url);
-//                
-//                // Get response body
-//                String responseBody = devTools.send(Network.getResponseBody(response.getRequestId())).getBody();
-//                System.out.println("Full API Response: " + responseBody);
-//
-//                // Parse JSON to extract the generated ID
-//                JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
-//                String generatedId = json.get("id").getAsString();  // Adjust the key as per API response
-//                System.out.println("Captured Generated ID: " + generatedId);
-//            }
-//        });
+ 
 
 		Base_driver.driver.findElement(save_Q).click();
 		
